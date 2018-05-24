@@ -46,6 +46,7 @@ type CreateConfig struct {
 	Name          string
 	Folder        string
 	Cluster		  string
+	HardwareVersion string // example: vmx-09
 	Host          string
 	ResourcePool  string
 	Datastore     string
@@ -396,6 +397,7 @@ func (config CreateConfig) toConfigSpec() types.VirtualMachineConfigSpec {
 	confSpec.Name = config.Name
 	confSpec.Annotation = config.Annotation
 	confSpec.GuestId = config.GuestOS
+	confSpec.Version = config.HardwareVersion
 	return confSpec
 }
 
@@ -461,12 +463,13 @@ func (vm *VirtualMachine) AddCdrom(isoPath string) error {
 	if err != nil {
 		return err
 	}
-	sata, err := vm.FindSATAController()
+
+	controller, err := vm.FindIDEController()
 	if err != nil {
 		return err
 	}
 
-	cdrom, err := vm.CreateCdrom(sata)
+	cdrom, err := vm.CreateCdrom(controller)
 	if err != nil {
 		return err
 	}

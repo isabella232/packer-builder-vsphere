@@ -19,6 +19,7 @@ type CreateConfig struct {
 	Network       string `mapstructure:"network"`
 	NetworkCard   string `mapstructure:"network_card"`
 	USBController bool   `mapstructure:"usb_controller"`
+	HardwareVersion string `mapstructure:"hardware_version"`
 }
 
 func (c *CreateConfig) Prepare() []error {
@@ -64,6 +65,7 @@ func (s *StepCreateVM) Run(state multistep.StateBag) multistep.StepAction {
 		Name:                s.Config.VMName,
 		Folder:              s.Config.Folder,
 		Cluster:             s.Config.Cluster,
+		HardwareVersion:     s.Config.HardwareVersion,
 		Host:                s.Config.Host,
 		ResourcePool:        s.Config.ResourcePool,
 		Datastore:           s.Config.Datastore,

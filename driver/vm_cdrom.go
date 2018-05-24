@@ -10,21 +10,21 @@ func (vm *VirtualMachine) AddSATAController() error {
 	return vm.addDevice(sata)
 }
 
-func (vm *VirtualMachine) FindSATAController() (*types.VirtualAHCIController, error) {
+func (vm *VirtualMachine) FindIDEController() (*types.VirtualIDEController, error) {
 	l, err := vm.Devices()
 	if err != nil {
 		return nil, err
 	}
 
-	c := l.PickController((*types.VirtualAHCIController)(nil))
+	c := l.PickController((*types.VirtualIDEController)(nil))
 	if c == nil {
-		return nil, errors.New("no available SATA controller")
+		return nil, errors.New("no available IDE controller")
 	}
 
-	return c.(*types.VirtualAHCIController), nil
+	return c.(*types.VirtualIDEController), nil
 }
 
-func (vm *VirtualMachine) CreateCdrom(c *types.VirtualAHCIController) (*types.VirtualCdrom, error) {
+func (vm *VirtualMachine) CreateCdrom(c *types.VirtualIDEController) (*types.VirtualCdrom, error) {
 	l, err := vm.Devices()
 	if err != nil {
 		return nil, err
